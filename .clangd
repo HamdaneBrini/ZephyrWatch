@@ -1,0 +1,15 @@
+CompileFlags:
+  CompilationDatabase: build
+  Add:
+    - -D__XTENSA__
+
+  Remove:
+    - -mlongcalls
+    - -mtext-section-literals
+    - -fstrict-volatile-bitfields
+    - -fno-tree-switch-conversion
+    - -fno-shrink-wrap
+
+Index:
+  Background: Build
+

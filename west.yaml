@@ -1,0 +1,9 @@
+manifest:
+  projects:
+    - name: zephyr
+      url: https://github.com/zephyrproject-rtos/zephyr
+      revision: 02a337c21da4944d82c5d8e68ebcf7712e26fdf7
+      import: true
+
+  self:
+    path: apps/ZephyrWatch
