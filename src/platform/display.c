@@ -3,7 +3,7 @@
  * @brief ZephyrWatch display and PWM backlight implementation.
  */
 
-#include "display.h"
+#include <zephyrwatch/platform/display.h>
 
 #include <stdint.h>
 #include <sys/errno.h>

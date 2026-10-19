@@ -1,0 +1,15 @@
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+&i2c1 {
+    qmi8658: qmi8658a@6b {
+        compatible = "qst,qmi8658a";
+        reg = <0x6b>;
+        accel-fs = <4>;
+        gyro-fs = <512>;
+        accel-odr = <56>;
+        gyro-odr = <56>;
+        int-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+        int-pin = <2>;
+        status = "okay";
+    };
+};

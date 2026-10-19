@@ -3,14 +3,10 @@
  * @brief ZephyrWatch display and backlight control API.
  */
 
-#ifndef ZEPHYR_WATCH_DISPLAY_H_
-#define ZEPHYR_WATCH_DISPLAY_H_
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @defgroup zephyr_watch_display Display control
@@ -66,8 +62,4 @@ int w_display_off(void);
 
 /** @} */
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* ZEPHYR_WATCH_DISPLAY_H_ */
+#endif /* DISPLAY_H */

@@ -1,6 +1,7 @@
 
 BOARD := esp32s3_touch_lcd_1_28/esp32s3/procpu
 CONF_FILE:= boards/esp32s3_touch_lcd_1_28.conf
+OVERLAY_FILE := boards/esp32s3_touch_lcd_1_28.overlay
 BUILD_DIR := build
 PORT := /dev/ttyACM0
 BAUDRATE := 115200
@@ -14,14 +15,16 @@ build:
 	@echo "Building $(APP_NAME)'s firmware..."
 	@west build -b $(BOARD) . -d $(BUILD_DIR) -- \
 		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-		-DEXTRA_CONF_FILE=$(CONF_FILE)
+		-DEXTRA_CONF_FILE=$(CONF_FILE) \
+		-DDTC_OVERLAY_FILE=$(OVERLAY_FILE)
 
 rebuild:
 	@echo "Rebuilding $(APP_NAME)'s firmware..."
 	@west build -b $(BOARD) . -d $(BUILD_DIR) \
 		--pristine=always -- \
 		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-		-DEXTRA_CONF_FILE=$(CONF_FILE)
+		-DEXTRA_CONF_FILE=$(CONF_FILE) \
+		-DDTC_OVERLAY_FILE=$(OVERLAY_FILE)
 
 menuconfig:
 	@west build -d $(BUILD_DIR) -t menuconfig

@@ -6,13 +6,19 @@ find_package(Zephyr REQUIRED HINTS
 )
 project(ZephyrWatch)
 
-target_sources(app PRIVATE src/main.c
+target_sources(app PRIVATE
+    src/main.c
     src/platform/display.c
-    src/ui/watch_face.c)
+    src/ui/watch_face.c
+    src/core/app_manager.c
+    src/core/app_registry.c
+    src/services/imu_services.c
+    src/services/time_service.c
+    src/utils/string_utils.c
+    src/applications/watchface/watchface_app.c
+)
 
-
-    target_include_directories(app PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/zephyrWatch
+target_include_directories(app PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
