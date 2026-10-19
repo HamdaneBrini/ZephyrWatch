@@ -2,8 +2,7 @@
  * @file main.c
  * @brief ZephyrWatch firmware entry point.
  *
- * Initializes platform services and the watch face, then services LVGL and
- * consumes accelerometer samples.
+ * Initializes platform services and the watch face, then services LVGL.
  */
 
 #include <stdint.h>
@@ -15,6 +14,7 @@
 #include <zephyrwatch/core/app_manager.h>
 #include <zephyrwatch/platform/display.h>
 #include <zephyrwatch/services/imu_services.h>
+#include <zephyrwatch/services/pedometer_service.h>
 #include <zephyrwatch/services/time_service.h>
 
 /** @brief Initialize ZephyrWatch and run its main event loop. */
@@ -29,6 +29,10 @@ int main(void) {
     }
     if (imu_service_init() != 0) {
         printk("Failed to initialize IMU service\n");
+        return -1;
+    }
+    if (pedometer_service_init() != 0) {
+        printk("Failed to initialize pedometer service\n");
         return -1;
     }
     if (w_display_init() != 0) {
@@ -51,11 +55,6 @@ int main(void) {
     while (1) {
         uint32_t delay_ms = lv_timer_handler();
         k_msleep(delay_ms);
-        imu_accel_sample_t sample;
-        if (imu_service_accel_read(&sample, K_NO_WAIT) == 0) {
-            printk("Accel Sample: Time: %lld ms, X: %d mg, Y: %d mg, Z: %d mg, Seq: %u\n",
-                   (long long)sample.timestamp_ms, sample.x_mg, sample.y_mg, sample.z_mg, sample.sequence);
-        }
     }
 
     return 0;

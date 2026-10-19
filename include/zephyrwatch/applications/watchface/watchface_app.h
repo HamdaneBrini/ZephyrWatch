@@ -12,7 +12,7 @@
 
 /**
  * @defgroup watchface_app Watch face application
- * @brief Displays local time on the main watch screen.
+ * @brief Displays local time and the detected step count on the main screen.
  * @{
  */
 
@@ -27,7 +27,7 @@ extern const App_entry_t watchface_app_entry;
 lv_obj_t* watchface_create(void);
 
 /**
- * @brief Start periodic updates of the watch face clock.
+ * @brief Start periodic clock updates and pedometer processing.
  *
  * @retval 0 The update timer was started successfully.
  * @retval -ENOMEM The LVGL timer could not be created.
@@ -35,7 +35,7 @@ lv_obj_t* watchface_create(void);
 int watchface_on_open(void);
 
 /**
- * @brief Stop periodic updates of the watch face clock.
+ * @brief Stop periodic clock updates and pedometer processing.
  *
  * @retval 0 The update timer was stopped successfully.
  * @retval -EINVAL No update timer is running.

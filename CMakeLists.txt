@@ -13,6 +13,7 @@ target_sources(app PRIVATE
     src/core/app_manager.c
     src/core/app_registry.c
     src/services/imu_services.c
+    src/services/pedometer_service.c
     src/services/time_service.c
     src/utils/string_utils.c
     src/applications/watchface/watchface_app.c
