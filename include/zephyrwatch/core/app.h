@@ -7,7 +7,6 @@
 #define APP_H
 
 #include <lvgl.h>
-#include <sys/_intsup.h>
 
 /**
  * @defgroup app_core Application core
@@ -18,8 +17,9 @@
 /** @brief Identifiers for applications available on the watch. */
 typedef enum {
     APP_ID_WATCHFACE,   /**< Main watch face application. */
-    APP_ID_SETTINGS,    /**< Watch settings application. */
-    APP_ID_SYSTEM_INFO, /**< System information application. */
+    APP_ID_PEDOMETER,   /**< Detailed pedometer application. */
+    APP_ID_SETTINGS,    /**< Reserved for the planned settings application. */
+    APP_ID_SYSTEM_INFO, /**< Reserved for the planned system information app. */
 
     APP_ID_COUNT /**< Number of application identifiers; must remain last. */
 } App_id_t;

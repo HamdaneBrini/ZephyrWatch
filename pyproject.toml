@@ -1,7 +1,7 @@
 [project]
 name = "zephyrwatch"
 version = "0.1.0"
-description = "Add your description here"
+description = "Real-time activity-tracking smartwatch firmware built with Zephyr RTOS"
 readme = "README.md"
 authors = [
     { name = "HamdaneBrini", email = "hamdenbrini01@gmail.com" }
@@ -11,8 +11,8 @@ dependencies = [
     "pre-commit>=4.7.0",
 ]
 
-[project.scripts]
-zephyrwatch = "zephyrwatch:main"
+[tool.uv]
+package = false
 
 [build-system]
 requires = ["uv_build>=0.13.1,<0.14.0"]

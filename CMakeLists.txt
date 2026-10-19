@@ -16,6 +16,7 @@ target_sources(app PRIVATE
     src/services/pedometer_service.c
     src/services/time_service.c
     src/utils/string_utils.c
+    src/applications/pedometer/pedometer_app.c
     src/applications/watchface/watchface_app.c
 )
 

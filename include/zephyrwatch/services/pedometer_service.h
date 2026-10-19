@@ -12,7 +12,7 @@
 
 /**
  * @defgroup pedometer_service Pedometer service
- * @brief Detects steps from timestamped three-axis accelerometer samples.
+ * @brief Detects steps from the X/Y plane of timestamped accelerometer samples.
  * @{
  */
 
@@ -28,9 +28,9 @@ int pedometer_service_init(void);
 /**
  * @brief Process one accelerometer sample.
  *
- * The detector uses the orientation-independent acceleration magnitude,
- * low-pass filtering, threshold hysteresis, and a minimum step interval.
- * Samples must be supplied in nondecreasing timestamp order.
+ * The detector uses planar acceleration magnitude, low-pass filtering,
+ * threshold hysteresis, and a minimum step interval. Samples must be supplied
+ * in nondecreasing timestamp order.
  *
  * @param sample Accelerometer sample to process.
  *
@@ -40,6 +40,17 @@ int pedometer_service_init(void);
  *                  than the previously processed sample.
  */
 int pedometer_service_process_sample(const imu_accel_sample_t* sample);
+
+/**
+ * @brief Process all accelerometer samples currently queued by the IMU service.
+ *
+ * This non-blocking function is intended to be called periodically by the
+ * active application. Each queued sample is passed to
+ * pedometer_service_process_sample().
+ *
+ * @return Number of samples processed, or a negative errno value on failure.
+ */
+int pedometer_service_process_pending(void);
 
 /**
  * @brief Get the detected step count.

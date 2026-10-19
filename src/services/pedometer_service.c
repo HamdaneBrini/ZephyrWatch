@@ -20,7 +20,7 @@
 /** Low-pass filter divisor. A larger value produces stronger smoothing. */
 #define ACCEL_FILTER_DIVISOR   INT64_C(10)
 
-/** Minimum interval between steps, equivalent to a maximum of 240 steps/min. */
+/** Minimum interval between steps, equivalent to a maximum of 60 steps/min. */
 #define MIN_STEP_INTERVAL_MS   INT64_C(1000)
 
 /** Internal state of the step detector. */
@@ -40,10 +40,10 @@ static pedometer_state_t pedometer_state;
 K_MUTEX_DEFINE(pedometer_mutex);
 
 /**
- * @brief Calculate the squared acceleration-vector magnitude.
+ * @brief Calculate the squared planar acceleration magnitude.
  *
- * Squared magnitude avoids a square-root operation while remaining independent
- * of watch orientation.
+ * Squared magnitude avoids a square-root operation. The current detector uses
+ * the X and Y axes and intentionally ignores Z-axis acceleration.
  *
  * @param sample Accelerometer sample to measure.
  *
@@ -114,6 +114,23 @@ int pedometer_service_process_sample(const imu_accel_sample_t* sample) {
 
     k_mutex_unlock(&pedometer_mutex);
     return result;
+}
+
+/** @copydoc pedometer_service_process_pending */
+int pedometer_service_process_pending(void) {
+    imu_accel_sample_t sample;
+    int processed = 0;
+
+    while (imu_service_accel_read(&sample, K_NO_WAIT) == 0) {
+        int ret = pedometer_service_process_sample(&sample);
+
+        if (ret < 0) {
+            return ret;
+        }
+        processed++;
+    }
+
+    return processed;
 }
 
 /** @copydoc pedometer_service_step_count_get */

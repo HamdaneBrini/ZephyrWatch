@@ -37,24 +37,6 @@ int app_manager_init(void);
 int app_manager_open(const App_id_t app_id);
 
 /**
- * @brief Close an application.
- *
- * @param app_id Identifier of the application to close.
- *
- * @retval 0 The application was closed successfully.
- * @return A negative errno value on failure.
- */
-int app_manager_close(const App_id_t app_id);
-
-/**
- * @brief Display the application launcher.
- *
- * @retval 0 The launcher was displayed successfully.
- * @return A negative errno value on failure.
- */
-int app_managershow_launcher(void);
-
-/**
  * @brief Get the currently active application.
  *
  * @param[out] entry Destination for the active application entry.

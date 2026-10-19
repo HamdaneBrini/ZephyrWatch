@@ -4,9 +4,23 @@ ZephyrWatch is my personal project to build a real-time activity-tracking smartw
 
 My goal is to develop useful smartwatch applications while gaining practical experience with multicore processing, sensor acquisition, inter-process communication (IPC), and real-time performance. I want to explore how sensor processing and an interactive interface can run together while keeping timing predictable and the display responsive.
 
+## Current implementation
+
+The current firmware is a single-core prototype running on the ESP32-S3 PRO CPU. It includes:
+
+- a dark LVGL watch face displaying local hours and minutes;
+- interrupt-driven QMI8658A accelerometer acquisition with a bounded sample queue;
+- an experimental planar X/Y step detector with filtering, hysteresis, and minimum step spacing;
+- a step counter on the watch face and a dedicated pedometer screen with touch navigation;
+- an application registry and lifecycle manager for switching LVGL screens;
+- CST816S touch polling at 20 ms, with controller auto-sleep disabled during startup so touch remains responsive after inactivity;
+- PWM backlight control and display blanking support.
+
+The displayed time is currently initialized from a fixed development timestamp and UTC offset in `src/main.c`; automatic synchronization has not yet been implemented. Step-detection thresholds are also experimental and require calibration against recorded motion data.
+
 ## Planned applications and features
 
-These features describe the development roadmap and are not all implemented yet.
+The watch face and initial pedometer are implemented. The remaining items describe the development roadmap.
 
 1. **Digital watch** — Display the current time and date with a minimal, customizable watch face.
 2. **Pedometer and activity tracking** — Use the QMI8658 accelerometer to count steps, estimate walking activity, and track progress toward a daily goal.
@@ -232,12 +246,27 @@ The project's clangd configuration expects `build/compile_commands.json`; update
 
 ## Project layout
 
-- `src/`: application source code.
-- `include/`: application headers.
+- `src/applications/`: LVGL watch applications and their lifecycle callbacks.
+- `src/core/`: application registry and screen lifecycle management.
+- `src/platform/`: board-facing display and backlight support.
+- `src/services/`: time, IMU acquisition, and pedometer services.
+- `include/zephyrwatch/`: documented public interfaces for application modules.
 - `boards/`: board-specific configuration and devicetree overlays.
 - `prj.conf`: Zephyr configuration.
 - `Makefile`: build, flash, and serial monitor automation.
 - `west.yaml`: pinned Zephyr revision and imported dependencies.
+
+## Code quality checks
+
+The repository uses clang-format through pre-commit. Before submitting changes, run:
+
+```sh
+uv sync
+uv run pre-commit run --all-files
+make rebuild
+```
+
+The pre-commit hook formats all C sources and headers according to `.clang-format`. A pristine build verifies the final Kconfig and devicetree configuration.
 
 ## Author and contact
 

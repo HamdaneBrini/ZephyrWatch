@@ -13,7 +13,7 @@
 
 #include <zephyrwatch/applications/watchface/watchface_app.h>
 #include <zephyrwatch/core/app.h>
-#include <zephyrwatch/services/imu_services.h>
+#include <zephyrwatch/core/app_manager.h>
 #include <zephyrwatch/services/pedometer_service.h>
 #include <zephyrwatch/services/time_service.h>
 #include <zephyrwatch/utils/string_utils.h>
@@ -84,15 +84,21 @@ static void update_steps_label(void) {
  * @param timer LVGL timer that requested the update.
  */
 static void update_pedometer(lv_timer_t* timer) {
-    imu_accel_sample_t sample;
-
     ARG_UNUSED(timer);
 
-    while (imu_service_accel_read(&sample, K_NO_WAIT) == 0) {
-        (void)pedometer_service_process_sample(&sample);
-    }
-
+    (void)pedometer_service_process_pending();
     update_steps_label();
+}
+
+/**
+ * @brief Open the detailed pedometer application.
+ *
+ * @param event LVGL click event.
+ */
+static void pedometer_button_clicked(lv_event_t* event) {
+    ARG_UNUSED(event);
+    printk("Pedometer button clicked, opening pedometer app\n");
+    (void)app_manager_open(APP_ID_PEDOMETER);
 }
 
 /** @copydoc watchface_app_entry */
@@ -118,6 +124,8 @@ static void configure_screen(lv_obj_t* screen) {
 /** @copydoc watchface_create */
 lv_obj_t* watchface_create(void) {
     lv_obj_t* screen = lv_obj_create(NULL);
+    lv_obj_t* pedometer_button;
+    lv_obj_t* pedometer_button_label;
 
     configure_screen(screen);
 
@@ -131,6 +139,15 @@ lv_obj_t* watchface_create(void) {
     lv_obj_align(steps_label, LV_ALIGN_CENTER, 0, 48);
     displayed_step_count = UINT32_MAX;
     update_steps_label();
+
+    pedometer_button = lv_button_create(screen);
+    lv_obj_set_size(pedometer_button, 112, 38);
+    lv_obj_align(pedometer_button, LV_ALIGN_BOTTOM_MID, 0, -16);
+    lv_obj_add_event_cb(pedometer_button, pedometer_button_clicked, LV_EVENT_CLICKED, NULL);
+
+    pedometer_button_label = lv_label_create(pedometer_button);
+    lv_label_set_text(pedometer_button_label, "Pedometer");
+    lv_obj_center(pedometer_button_label);
 
     return screen;
 }
